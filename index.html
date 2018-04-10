@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Web App Form Generator</title>
+        <meta name="description" content="Tool to generate web app elements for Surgeri.">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/jquery.min.js" type="text/javascript"></script>
+		<script src="js/popper.min.js"></script>
+		<script src="js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="js/script.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <h1>Web App Form Generator</h1>
+		<div class="row">
+			<div class="col-md-12 col-lg-12">
+				<form id="html-gen-form" role="form">
+					<div class="form-group">
+						<label for="main-div-id">Outer Div Id</label>
+						<input type="text" class="form-control" id="main-div-id" placeholder="Enter Id of the outer div">
+					</div>
+					<div class="form-group">
+						<label for="main-div-class">Outer Div Class</label><br/>
+						<select id="bootstrap-col-type">
+							<option value="col-xs-">xs</option>
+							<option value="col-sm-">sm</option>
+							<option value="col-md-">md</option>
+							<option value="col-lg-">lg</option>
+						</select>
+						<select id="bootstrap-col-val">
+							<option value="2">2</option>
+							<option value="4">4</option>
+							<option value="6">6</option>
+							<option value="8">8</option>
+							<option value="10">10</option>
+							<option value="12">12</option>
+						</select>
+						<button id="addDivClass" type="button" class="btn btn-primary btn-sm">Add</button>
+						<input type="text" class="form-control" id="main-div-class" style="margin-top:1%" placeholder="Enter Class of the Div element">
+					</div>
+					<div class="form-group">
+						<label for="elem-type">HTML Element Type</label>
+						<select id="elem-type" class="form-control">
+							<option value="hidden">Hidden Input</option>
+							<option value="input">Text Input</option>
+							<option value="textarea">Textarea Input</option>
+							<option value="radio">Radio</option>
+							<option value="checkbox">Checkbox</option>
+							<option value="select">Select</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="elem-label-attribute">HTML Element Label</label>
+						<input type="text" class="form-control" id="elem-label-attribute" placeholder="Enter Label of the HTML element">
+					</div>
+					<div id="div-enum-class-name" class="form-group">
+						<label for="elem-enum-attribute">ENUM Class Name</label>
+						<input type="text" class="form-control" id="elem-enum-attribute" placeholder="Enter ENUM Class">
+						<small id="elem-enum-attribute" class="form-text text-muted">Enter the ENUM java class name prefixed by its folder (if any). So if the name of the enum class is IVCExtentionType and its inside hcc folder, then put hcc.IVCExtentionType</small>
+					</div>
+					<div class="form-group">
+						<label for="elem-id-attribute">HTML Element Id</label>
+						<input type="text" class="form-control" id="elem-id-attribute" placeholder="Enter Id of the HTML element">
+					</div>
+					<div class="form-group">
+						<label for="elem-name-attribute">HTML Element Name</label>
+						<input type="text" class="form-control" id="elem-name-attribute" placeholder="Enter Name of the HTML element">
+					</div>
+					<div class="form-group input-parent-divs">
+						<label for="elem-val-attribute">HTML Element Value</label>
+						<input type="text" class="form-control" id="elem-val-attribute" placeholder="Enter Value of the HTML element">
+					</div>
+					<div class="form-group">
+						<label for="elem-class-attribute">HTML Element Class(es)</label><br/>
+						<select id="elem-bootstrap-col-type">
+							<option value="col-xs-">xs</option>
+							<option value="col-sm-">sm</option>
+							<option value="col-md-">md</option>
+							<option value="col-lg-">lg</option>
+						</select>
+						<select id="elem-bootstrap-col-val">
+							<option value="2">2</option>
+							<option value="4">4</option>
+							<option value="6">6</option>
+							<option value="8">8</option>
+							<option value="10">10</option>
+							<option value="12">12</option>
+						</select>
+						<button id="addDivClassToHTML" type="button" class="btn btn-primary btn-sm">Add</button>
+						<input type="text" class="form-control" id="elem-class-attribute" style="margin-top:1%" placeholder="Enter Class of the HTML element">
+						<small id="elem-class" class="form-text text-muted">Enter multiple classes by comma separated</small>
+					</div>
+					<button id="gen-block-btn" type="button" class="btn btn-success">Generate HTML block</button>
+					<button id="clear-btn" type="button" class="btn btn-danger">Clear</button>
+				</form>
+			</div>
+		</div>
+
+		<div class="row" style="margin-top:2%">
+			<h3>HTML Output</h3>
+			<hr/>
+			<textarea id="container" class="form-control" style="width:100%;height:300px;"></textarea>
+		</div>
+
+    </body>
+</html>
