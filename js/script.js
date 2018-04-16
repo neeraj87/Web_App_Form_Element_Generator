@@ -3,14 +3,14 @@ $(document).ready(function(){
 	'<div main_div_id  main_div_cls>\n'+
 	'	<ul>\n'+
 	'		<li>\n'+
-	'			<label for="input_id">input_label</label>\n'+
+	'			<label for="label_for">input_label</label>\n'+
 	'			inner_element' +
 	'		</li>\n'+
 	'	</ul>\n'+
 	'</div>';
 
 	var inputTextVar = '<input type="input_type" id="input_id" class="form-control input_classes" name="input_name" value="input_val"/>\n';
-	var textareaVar = '<textarea id="input_id" name="input_name" style="width:100%;height:75px;"></textarea>\n';
+	var textareaVar = '<textarea type="input_type" id="input_id" name="input_name" style="width:100%;height:75px;"></textarea>\n';
 
 	var selectVar =
 	'<select id="input_id" name="input_name">\n'+
@@ -64,27 +64,29 @@ $(document).ready(function(){
 	});
 
 	$('#gen-block-btn').on('click', function(){
-		var elementType = $('#elem-type option:selected').val();
+		var elementTypeVal = $('#elem-type option:selected').val();
+		var elementTypeText = $('#elem-type option:selected').text();
 		var inputTypeVar = inputVar;
 
-		if(elementType == 'input' || elementType == 'hidden') {
+		if(elementTypeText == 'Text' || elementTypeText == 'Hidden') {
 			inputTypeVar = inputTypeVar.replace('inner_element', inputTextVar);
-		} else if(elementType == 'textarea') {
+		} else if(elementTypeText == 'Textarea') {
 			inputTypeVar = inputTypeVar.replace('inner_element', textareaVar);
-		} else if(elementType == 'radio') {
+		} else if(elementTypeText == 'Radio') {
 			inputTypeVar = inputTypeVar.replace('inner_element', radioVar);
 			inputTypeVar = inputTypeVar.replace('ENUM_CLASS_NAME', $('#elem-enum-attribute').val());
-		} else if(elementType == 'checkbox') {
+		} else if(elementTypeText == 'Checkbox') {
 			inputTypeVar = inputTypeVar.replace('inner_element', checkboxVar);
 			inputTypeVar = inputTypeVar.replace('ENUM_CLASS_NAME', $('#elem-enum-attribute').val());
-		} else if(elementType == 'select') {
+		} else if(elementTypeText == 'Select') {
 			inputTypeVar = inputTypeVar.replace('inner_element', selectVar);
 			inputTypeVar = inputTypeVar.replace('ENUM_CLASS_NAME', $('#elem-enum-attribute').val());
 		}
 
 		inputTypeVar = inputTypeVar.replace('main_div_id', $('#main-div-id').val() != '' ? 'id="' + $('#main-div-id').val() + '"' : '');
 		inputTypeVar = inputTypeVar.replace('main_div_cls', $('#main-div-class').val() != '' ? 'class="' + $('#main-div-class').val() + '"' : '');
-		inputTypeVar = inputTypeVar.replace('input_type', elementType);
+		inputTypeVar = inputTypeVar.replace('input_type', elementTypeVal);
+		inputTypeVar = inputTypeVar.replace('label_for', $('#elem-id-attribute').val());
 		inputTypeVar = inputTypeVar.replace('input_id', $('#elem-id-attribute').val());
 		inputTypeVar = inputTypeVar.replace('input_label', $('#elem-label-attribute').val());
 		inputTypeVar = inputTypeVar.replace('input_name', $('#elem-name-attribute').val());
@@ -98,7 +100,6 @@ $(document).ready(function(){
 		$('form#html-gen-form input').each(function(){
 			$(this).val('');
 		});
-
 		$('#container').val('');
 	});
 });
