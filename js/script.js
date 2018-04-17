@@ -18,7 +18,7 @@ $(document).ready(function(){
 	'</select>\n';
 
 	var radioVar =
-	'<div class="row" style="margin-top:1%;">\n'+
+	'<div id="input_id" class="row" style="margin-top:1%;">\n'+
 	'	<div class="input_classes" th:each="option : ${T(in.surgeri.model.enums.ENUM_CLASS_NAME).values()}">\n'+
 	'		<div class="radio radio-primary">\n'+
 	'			<input name="input_name" type="radio" th:id="${option.toString()}" th:value="${option}" />\n'+
@@ -28,7 +28,7 @@ $(document).ready(function(){
 	'</div>\n';
 
 	var checkboxVar =
-	'<div class="row" style="margin-top:1%;">\n'+
+	'<div id="input_id" class="row" style="margin-top:1%;">\n'+
 	'	<div class="input_classes" th:each="option : ${T(in.surgeri.model.enums.ENUM_CLASS_NAME).values()}">\n'+
 	'		<div class="checkbox checkbox-custom checkbox-circle">\n'+
 	'			<input name="input_name" type="checkbox" th:id="${option.toString()}" th:value="${option}" />\n'+
