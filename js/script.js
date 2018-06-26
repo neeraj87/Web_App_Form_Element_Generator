@@ -92,14 +92,13 @@ $(document).ready(function(){
 		inputTypeVar = inputTypeVar.replace('input_name', $('#elem-name-attribute').val());
 		inputTypeVar = inputTypeVar.replace('input_val', $('#elem-val-attribute').val());
 		inputTypeVar = inputTypeVar.replace('input_classes', $('#elem-class-attribute').val());
-
-		$('#container').val(inputTypeVar);
+		$('#htmlContainer').text(inputTypeVar);
 	});
 
 	$('#clear-btn').on('click', function(){
 		$('form#html-gen-form input').each(function(){
 			$(this).val('');
 		});
-		$('#container').val('');
+		$('#htmlContainer').text('');
 	});
 });
