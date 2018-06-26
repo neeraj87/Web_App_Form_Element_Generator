@@ -19,6 +19,8 @@ $(document).ready(function(){
         "hideMethod": "fadeOut"
     };
 
+    new ClipboardJS('#copy-json');
+
     $('#sub-types').hide();
 
     $('#gen-json-btn').on('click', function(){
