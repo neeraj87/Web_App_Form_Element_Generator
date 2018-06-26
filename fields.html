@@ -14,6 +14,7 @@
 		<script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
         <script src="js/toastr.js" type="text/javascript"></script>
+        <script src="js/clipboard.min.js" type="text/javascript"></script>
         <script src="https://unpkg.com/ionicons@4.2.1/dist/ionicons.js"></script>
 		<script src="js/fieldsPage.js" type="text/javascript"></script>
     </head>
@@ -91,8 +92,16 @@
 				</form>
             </div>
             <div class="col-md-6 col-lg-6">
-                <h3>JSON Output</h3>
-                <hr>
+                <div class="row">
+                    <div class="col-md-10 col-lg-10">
+                        <h3>JSON Output</h3>
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                        <button id="copy-json" type="button" class="btn btn-link pull-right" data-clipboard-target="#jsonContainer" data-toggle="tooltip" data-placement="top" title="Copy JSON">
+                            <ion-icon name="copy" size="large"></ion-icon>
+                        </button>
+                    </div>
+                </div>
                 <div class="row" style="height:800px;overflow-y: scroll;">
                     <pre id="jsonContainer"></pre>
                 </div>
