@@ -53,3 +53,7 @@ img {
 iframe{
     overflow:hidden;
 }
+
+.bootbox .modal-header{
+    display: block;
+}

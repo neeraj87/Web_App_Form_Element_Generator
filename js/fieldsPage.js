@@ -1,6 +1,8 @@
 $(document).ready(function(){
     var jsonVar = [];
 
+    var sectionObjArray = [];
+
     toastr.options = {
         "closeButton": false,
         "debug": false,
@@ -31,16 +33,44 @@ $(document).ready(function(){
         jsonVar.push({
             id : generateUUID(),
             label : $('#element-label').val(),
+            attribute : $('#element-attribute').val() == '' ? null : $('#element-attribute').val(),
+            section : {
+                label : $('#element-section').find('option:selected').text(),
+                key : $('#element-section').find('option:selected').val()
+            },
             field : $('#element-type').find('option:selected').val(),
             rendered : $('#element-rendered').prop('checked'),
             options : getSubTypesJSObj($('#element-type').find('option:selected').val()),
             required : $('#element-required').prop('checked'),
             placeholder : $('#element-placeholder').val(),
-            error_text : $('#element-error-text').val(),
+            error_text : $('#element-error-text').val()
         });
         $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
         toastr["success"]("Field added to JSON", "Success");
         clearForm();
+    });
+
+    $('#new-section').on('click', function(){
+        bootbox.prompt({
+            title: "Create new section",
+            inputType: 'text',
+            callback: function (result) {
+                if(result == '' || result == 'null') {
+                    return;
+                }
+                sectionObjArray.push({
+                    label : result,
+                    value : generateUUID()
+                });
+
+                $('#element-section').empty();
+                $('#element-section').append($("<option></option>").attr("value", "").text("None"));
+                for(var i = 0; i < sectionObjArray.length; i++) {
+                    $('#element-section').append($("<option></option>").attr("value",sectionObjArray[i].value).text(sectionObjArray[i].label));
+                }
+                toastr["success"]("New Section Created", "Success");
+            }
+        });
     });
 });
 
@@ -88,7 +118,9 @@ function getSubTypesJSObj(element) {
             subTypes.push({
                 id : generateUUID(),
                 label : $(this).children('input[name="label"]').val(),
-                value : $(this).children('input[name="value"]').val()
+                value : $(this).children('input[name="value"]').val(),
+                default : false,
+                on_check : ''
             });
         });
     }
@@ -97,6 +129,7 @@ function getSubTypesJSObj(element) {
 
 function clearForm() {
     $('#element-label').val('');
+    $('#element-attribute').val('');
     $('#element-placeholder').val('');
     $('#element-error-text').val('');
     $('#element-required').prop('checked', false);
