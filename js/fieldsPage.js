@@ -154,6 +154,19 @@ $(document).on('click', '.remove-this-btn', function(){
     $(this).parent().remove();
 });
 
+$(document).on('blur', '#element-label', function(){
+    if($(this).val() != '') {
+        var label = $(this).val().replace(/[\. ,:-]+/g, " ");
+        $('#element-attribute').val(toTitleCase(label).replace(/ /g,""));
+    }
+});
+
+$(document).on('blur', 'input[name="label"]', function(){
+    if($(this).val() != '') {
+        $(this).siblings('input[name="value"]').val($(this).val().toUpperCase().replace(/[\. ,:-]+/g,"_"));
+    }
+});
+
 function generateUUID() {
     var d = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -191,4 +204,10 @@ function clearForm() {
     });
     $('#element-type').find('option:eq(0)').attr('selected', 'selected');
     $('#sub-types').hide();
+}
+
+function toTitleCase(str) {
+    return str.replace(/(?:^|\s)\w/g, function(match) {
+        return match.toUpperCase();
+    });
 }
