@@ -1,6 +1,6 @@
 $(document).ready(function(){
     var jsonVar = [];
-
+    var jsTreeDataArray = [];
     var sectionObjArray = [];
 
     toastr.options = {
@@ -30,15 +30,19 @@ $(document).ready(function(){
             toastr["error"]("Missing Field", "Error");
             return;
         }
+        var id = generateUUID();
+        var fieldType = $('#element-type').find('option:selected').val();
+
         jsonVar.push({
-            id : generateUUID(),
+            id : id,
             label : $('#element-label').val(),
             attribute : $('#element-attribute').val() == '' ? null : $('#element-attribute').val(),
+            parent_id : null,
             section : {
                 label : $('#element-section').find('option:selected').text(),
-                key : $('#element-section').find('option:selected').val()
+                id : $('#element-section').find('option:selected').val()
             },
-            field : $('#element-type').find('option:selected').val(),
+            field : fieldType,
             rendered : $('#element-rendered').prop('checked'),
             options : getSubTypesJSObj($('#element-type').find('option:selected').val()),
             required : $('#element-required').prop('checked'),
@@ -47,6 +51,11 @@ $(document).ready(function(){
         });
         $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
         toastr["success"]("Field added to JSON", "Success");
+
+        if(fieldType == 'radio' || fieldType == 'checkbox' || fieldType == 'select') {
+            $('#field-list').append($("<option></option>").attr("value",id).text($('#element-label').val()));
+        }
+        $('#connected-field').append($("<option></option>").attr("value",id).text($('#element-label').val()));
         clearForm();
     });
 
@@ -71,6 +80,50 @@ $(document).ready(function(){
                 toastr["success"]("New Section Created", "Success");
             }
         });
+    });
+
+    $('#field-list').on('change', function(){
+        $('#field-options').empty();
+        jsTreeDataArray = [];
+        var parentId = $(this).find('option:selected').val();
+        var fieldObject = jsonVar.find(v => v.id === parentId);
+        var suboptions = fieldObject.options;
+        for(var i = 0; i < suboptions.length; i++) {
+            var optionObj = suboptions[i];
+            $('#field-options').append($("<option></option>").attr("value",optionObj.id).text(optionObj.label));
+        }
+        // jsTreeDataArray.push({
+        //     id: fieldObject.id,
+        //     parent : fieldObject.parent_id == null ? '#' : fieldObject.parent_id,
+        //     text : fieldObject.label
+        // });
+    });
+
+    $('#connect').on('click', function(){
+        //$('#jstree_demo_div').jstree('destroy');
+        var parentId = $('#field-list').find('option:selected').val();
+        var optionId = $('#field-options').find('option:selected').val();
+        var connectedFieldId = $('#connected-field').find('option:selected').val();
+
+        var optionsArrayObj = jsonVar.find(v => v.id === parentId).options;
+        var selectedOptionObj = optionsArrayObj.find(v => v.id === optionId);
+        var connectedFieldObj = jsonVar.find(v => v.id === connectedFieldId);
+
+        console.log('-------- optionsArrayObj: ' + JSON.stringify(optionsArrayObj));
+        console.log('-------- selectedOptionObj: ' + JSON.stringify(selectedOptionObj));
+        console.log('-------- connectedFieldObj: ' + JSON.stringify(connectedFieldObj));
+
+        connectedFieldObj.parent_id = selectedOptionObj.id;
+        selectedOptionObj.on_check = connectedFieldObj.id;
+
+        $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
+        // jsTreeDataArray.push({
+        //     id: connectedFieldObj.id,
+        //     parent : selectedOptionObj.id,
+        //     text : connectedFieldObj.label
+        // });
+        //$('#jstree_demo_div').jstree({'core' : {'data' : jsTreeDataArray}});
+        toastr["success"]("Fields connected", "Success");
     });
 });
 
@@ -120,7 +173,7 @@ function getSubTypesJSObj(element) {
                 label : $(this).children('input[name="label"]').val(),
                 value : $(this).children('input[name="value"]').val(),
                 default : false,
-                on_check : ''
+                on_check : null
             });
         });
     }
