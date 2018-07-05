@@ -114,7 +114,14 @@ $(document).ready(function(){
         console.log('-------- connectedFieldObj: ' + JSON.stringify(connectedFieldObj));
 
         connectedFieldObj.parent_id = selectedOptionObj.id;
-        selectedOptionObj.on_check = connectedFieldObj.id;
+
+        if(selectedOptionObj.on_check == null) {
+            var onCheckIdArray = [];
+            onCheckIdArray.push(connectedFieldObj.id);
+            selectedOptionObj.on_check = onCheckIdArray;
+        } else {
+            selectedOptionObj.on_check.push(connectedFieldObj.id);
+        }
 
         $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
         // jsTreeDataArray.push({
@@ -165,6 +172,29 @@ $(document).on('blur', 'input[name="label"]', function(){
     if($(this).val() != '') {
         $(this).siblings('input[name="value"]').val($(this).val().toUpperCase().replace(/[\. ,:-]+/g,"_"));
     }
+});
+
+$(document).on('click', '#fake', function(){
+    var testJSON = [];
+    for(var i = 0; i < 131; i++) {
+        testJSON.push({
+            id : generateUUID(),
+            label : 'Label - ' + i,
+            attribute : 'LABEL_ATT_' + i,
+            parent_id : null,
+            section : {
+                label : 'None',
+                id : ''
+            },
+            field : 'text',
+            rendered : true,
+            options : [],
+            required : false,
+            placeholder : 'placeholder for Label - ' + i ,
+            error_text : 'Enter this field'
+        });
+    }
+    $('#jsonContainer').text(JSON.stringify(testJSON, undefined, 2));
 });
 
 function generateUUID() {
