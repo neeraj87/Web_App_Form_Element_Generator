@@ -56,16 +56,48 @@
                         </div>
                         <div class="form-group">
                             <label for="element-type">Element Type</label>
-                            <select id="element-type" class="form-control">
-                                <option value="text">Text</option>
-                                <option value="date">Date</option>
-                                <option value="datetime">Date and Time</option>
-                                <option value="time">Time</option>
-                                <option value="textarea">Textarea</option>
-                                <option value="radio">Radio</option>
-                                <option value="checkbox">Checkbox</option>
-                                <option value="select">Select</option>
-                            </select>
+                            <div class="row">
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio1" name="element-type" value="text" checked> Text
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio2" name="element-type" value="textarea"> TextArea
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio6" name="element-type" value="radio"> Radio
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio7" name="element-type" value="checkbox"> Checkbox
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio3" name="element-type" value="date"> Date
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio4" name="element-type" value="time"> Time
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio5" name="element-type" value="datetime"> Date and Time
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio8" name="element-type" value="select"> Dropdown Select
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                         <div id="sub-types" class="card">
                             <div class="card-header">
@@ -76,7 +108,8 @@
                                 <div class="row">
                                     <input type="text" name="label" class="form-control col-md-5" placeholder="label" />
                                     <input type="text" name="value" class="form-control col-md-5" placeholder="value" />
-                                    <button type="button" class="btn btn-danger btn-sm col-md-2 remove-this-btn">
+                                    <input type="number" name="order" class="form-control col-md-1" />
+                                    <button type="button" class="btn btn-danger btn-sm col-md-1 remove-this-btn">
                                         <ion-icon name="close"></ion-icon>
                                     </button>
                                 </div>
@@ -103,14 +136,12 @@
                         <div class="form-group">
                             <label for="element-section">Element Section</label>
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-10">
                                     <select name="section" id="element-section" class="form-control">
                                         <option value="">None</option>
                                     </select>
                                 </div>
-                                <div class="col-md-4">
-                                    <button type="button" id="new-section" class="btn btn-primary">New Section</button>
-                                </div>
+                                <button type="button" id="new-section" class="btn btn-primary col-md-2">Add</button>
                             </div>
                         </div>
 
@@ -157,7 +188,7 @@
                             <option value="">None</option>
                         </select>
                     </div>
-                    <button id="connect" type="button" class="btn btn-primary">Connect</button>
+                    <button id="connect" type="button" class="btn btn-success">Connect</button>
                     <button id="fake" type="button" class="btn btn-primary">Test</button>
                 </div>
             </div>

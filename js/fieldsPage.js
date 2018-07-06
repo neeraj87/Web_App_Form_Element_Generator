@@ -1,3 +1,17 @@
+
+var text = 
+'<div class="form-group">'+
+'<label for="label_for">label_name</label>'+
+'<input type="text" class="form-control" id="input_id" placeholder="placeholder">'+
+'</div>';
+
+var textArea = 
+'<div class="form-group">'+
+'<label for="label_for">label_name</label>'+
+'<textarea type="text" class="form-control" id="label_for" placeholder="placeholder"s></textarea>'+
+'</div>';
+	
+
 $(document).ready(function(){
     var jsonVar = [];
     var jsTreeDataArray = [];
@@ -31,9 +45,9 @@ $(document).ready(function(){
             return;
         }
         var id = generateUUID();
-        var fieldType = $('#element-type').find('option:selected').val();
+        var fieldType = $('input[name="element-type"]:checked').val();
 
-        jsonVar.push({
+        var elementObj = {
             id : id,
             label : $('#element-label').val(),
             attribute : $('#element-attribute').val() == '' ? null : $('#element-attribute').val(),
@@ -44,11 +58,13 @@ $(document).ready(function(){
             },
             field : fieldType,
             rendered : $('#element-rendered').prop('checked'),
-            options : getSubTypesJSObj($('#element-type').find('option:selected').val()),
+            options : getSubTypesJSObj(fieldType),
             required : $('#element-required').prop('checked'),
             placeholder : $('#element-placeholder').val(),
             error_text : $('#element-error-text').val()
-        });
+        };
+
+        jsonVar.push(elementObj);
         $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
         toastr["success"]("Field added to JSON", "Success");
 
@@ -92,15 +108,9 @@ $(document).ready(function(){
             var optionObj = suboptions[i];
             $('#field-options').append($("<option></option>").attr("value",optionObj.id).text(optionObj.label));
         }
-        // jsTreeDataArray.push({
-        //     id: fieldObject.id,
-        //     parent : fieldObject.parent_id == null ? '#' : fieldObject.parent_id,
-        //     text : fieldObject.label
-        // });
     });
 
     $('#connect').on('click', function(){
-        //$('#jstree_demo_div').jstree('destroy');
         var parentId = $('#field-list').find('option:selected').val();
         var optionId = $('#field-options').find('option:selected').val();
         var connectedFieldId = $('#connected-field').find('option:selected').val();
@@ -124,17 +134,11 @@ $(document).ready(function(){
         }
 
         $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
-        // jsTreeDataArray.push({
-        //     id: connectedFieldObj.id,
-        //     parent : selectedOptionObj.id,
-        //     text : connectedFieldObj.label
-        // });
-        //$('#jstree_demo_div').jstree({'core' : {'data' : jsTreeDataArray}});
         toastr["success"]("Fields connected", "Success");
     });
 });
 
-$(document).on('change', '#element-type', function(){
+$(document).on('change', 'input[name="element-type"]', function(){
     var value = $(this).val();
     if(value == 'select' || value == 'checkbox' || value == 'radio') {
         $('#sub-types').show();
@@ -147,7 +151,8 @@ $(document).on('click', '#add-sub-type', function(){
     var myvar = '<div class="row mt-2">'+
     '<input type="text" name="label" class="form-control col-md-5" placeholder="label"/>'+
     '<input type="text" name="value" class="form-control col-md-5" placeholder="value"/>'+
-    '<button type="button" class="btn btn-danger btn-sm col-md-2 remove-this-btn"><ion-icon name="close"></ion-icon></button>'+
+    '<input type="number" name="order" class="form-control col-md-1"/>'+
+    '<button type="button" class="btn btn-danger btn-sm col-md-1 remove-this-btn"><ion-icon name="close"></ion-icon></button>'+
     '</div>';
 
     $('#sub-type-body').append(myvar);
@@ -211,10 +216,12 @@ function getSubTypesJSObj(element) {
     var subTypes = [];
     if(element == 'select' || element == 'checkbox' || element == 'radio') {
         $('div#sub-type-body div.row').each(function(){
+            var order = $(this).children('input[name="order"]').val();
             subTypes.push({
                 id : generateUUID(),
                 label : $(this).children('input[name="label"]').val(),
                 value : $(this).children('input[name="value"]').val(),
+                order : order != undefined ? parseInt(order) : 0,
                 default : false,
                 on_check : null
             });
@@ -232,7 +239,7 @@ function clearForm() {
     $('div#sub-type-body div.row').each(function(){
         $(this).remove();
     });
-    $('#element-type').find('option:eq(0)').attr('selected', 'selected');
+    $('#radio1').prop('checked', true);
     $('#sub-types').hide();
 }
 
@@ -240,4 +247,18 @@ function toTitleCase(str) {
     return str.replace(/(?:^|\s)\w/g, function(match) {
         return match.toUpperCase();
     });
+}
+
+function displayElementPreview(elementObj) {
+    var element;
+    if(elementObj.field == 'text') {
+        element = text;
+        element = element.replace('label_for', elementObj.id);
+        element = element.replace('input_id', elementObj.id);
+        element = element.replace('label_name', elementObj.label);
+        element = element.replace('placeholder', elementObj.placeholder);
+    } else if(elementObj.field == 'textarea') {
+        element = textArea;
+    }
+    $('#elementHTML').html(element);
 }
