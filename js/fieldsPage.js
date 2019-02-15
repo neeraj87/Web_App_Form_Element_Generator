@@ -40,31 +40,41 @@ $(document).ready(function(){
     $('#sub-types').hide();
 
     $('#gen-json-btn').on('click', function(){
-        if($('#element-label').val() == '') {
+        if($('#element-label').val() === '' || $('#element-attribute').val() === '') {
             toastr["error"]("Missing Field", "Error");
             return;
         }
-        var id = generateUUID();
-        var fieldType = $('input[name="element-type"]:checked').val();
 
-        var elementObj = {
+        var fieldType = $('input[name="element-type"]:checked').val();
+        var attribute = $('#element-attribute').val();
+
+        // if(attribute != null) {
+        //     var objToFind = jsonVar.find(v => v['attribute'] === attribute);
+        //     if(objToFind != undefined) {
+        //         toastr["error"]("This attribute value already exist in the JSON.", "Error : Duplicate Attribute");
+        //     }
+        // }
+
+        var id = generateUUID();
+
+        jsonVar.push({
             id : id,
             label : $('#element-label').val(),
-            attribute : $('#element-attribute').val() == '' ? null : $('#element-attribute').val(),
+            attribute : attribute,
             parent_id : null,
+            field : fieldType,
+            inputType : fieldType == 'text' ? $('input[name="element-input-type"]:checked').val() : null,
             section : {
                 label : $('#element-section').find('option:selected').text(),
                 id : $('#element-section').find('option:selected').val()
             },
-            field : fieldType,
             rendered : $('#element-rendered').prop('checked'),
             options : getSubTypesJSObj(fieldType),
             required : $('#element-required').prop('checked'),
             placeholder : $('#element-placeholder').val(),
             error_text : $('#element-error-text').val()
-        };
+        });
 
-        jsonVar.push(elementObj);
         $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
         toastr["success"]("Field added to JSON", "Success");
 
@@ -142,8 +152,10 @@ $(document).on('change', 'input[name="element-type"]', function(){
     var value = $(this).val();
     if(value == 'select' || value == 'checkbox' || value == 'radio') {
         $('#sub-types').show();
+        $('#element-input-type-div').hide();
     } else {
         $('#sub-types').hide();
+        $('#element-input-type-div').show();
     }
 });
 
@@ -240,7 +252,9 @@ function clearForm() {
         $(this).remove();
     });
     $('#radio1').prop('checked', true);
+    $('#radio9').prop('checked', true);
     $('#sub-types').hide();
+    $('#element-input-type-div').show();
 }
 
 function toTitleCase(str) {
@@ -249,16 +263,16 @@ function toTitleCase(str) {
     });
 }
 
-function displayElementPreview(elementObj) {
-    var element;
-    if(elementObj.field == 'text') {
-        element = text;
-        element = element.replace('label_for', elementObj.id);
-        element = element.replace('input_id', elementObj.id);
-        element = element.replace('label_name', elementObj.label);
-        element = element.replace('placeholder', elementObj.placeholder);
-    } else if(elementObj.field == 'textarea') {
-        element = textArea;
-    }
-    $('#elementHTML').html(element);
-}
+// function displayElementPreview(elementObj) {
+//     var element;
+//     if(elementObj.field == 'text') {
+//         element = text;
+//         element = element.replace('label_for', elementObj.id);
+//         element = element.replace('input_id', elementObj.id);
+//         element = element.replace('label_name', elementObj.label);
+//         element = element.replace('placeholder', elementObj.placeholder);
+//     } else if(elementObj.field == 'textarea') {
+//         element = textArea;
+//     }
+//     $('#elementHTML').html(element);
+// }

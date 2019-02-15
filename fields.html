@@ -42,7 +42,7 @@
         </div>
     </nav>
     <div class="row mt-5">
-        <div class="col-md-6 col-lg-6">
+        <div class="col-md-8 col-lg-8">
             <div class="card">
                 <div class="card-body">
                     <form id="html-gen-form" role="form">
@@ -99,6 +99,26 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="element-input-type-div" class="form-group">
+                            <label for="element_input_type">Input Type</label>
+                            <div class="row">
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio9" name="element-input-type" value="string" checked> Text
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio10" name="element-input-type" value="numberDecimal"> Decimal
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio11" name="element-input-type" value="number"> Number
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         <div id="sub-types" class="card">
                             <div class="card-header">
                                 Enter Sub types for this element
@@ -151,7 +171,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-lg-6">
+        <div class="col-md-4 col-lg-4">
             <div class="card">
                 <div class="card-body">
                     <button id="copy-json" type="button" class="btn btn-link pull-right" data-clipboard-target="#jsonContainer" data-toggle="tooltip"
