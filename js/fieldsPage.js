@@ -66,15 +66,13 @@ $(document).ready(function(){
             required : $('#element-required').prop('checked'),
             placeholder : $('#element-placeholder').val(),
             error_text : $('#element-error-text').val(),
-            style: {
-                outer: $('#element-style-outer').val()
-            }
+            style: $('#element-style-outer').val()
         });
 
         $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
         toastr["success"]("Field added to JSON", "Success");
 
-        if(fieldType == 'radio' || fieldType == 'checkbox' || fieldType == 'select') {
+        if(fieldType == 'radio' || fieldType == 'checkboxgroup' || fieldType == 'select') {
             $('#field-list').append($("<option></option>").attr("value",id).text($('#element-label').val()));
         }
         $('#connected-field').append($("<option></option>").attr("value",id).text($('#element-label').val()));
@@ -146,7 +144,7 @@ $(document).ready(function(){
 
 $(document).on('change', 'input[name="element-type"]', function(){
     var value = $(this).val();
-    if(value == 'select' || value == 'checkbox' || value == 'radio') {
+    if(value == 'select' || value == 'checkboxgroup' || value == 'radio') {
         $('#sub-types').show();
         $('#element-input-type-div').hide();
     } else {
@@ -258,7 +256,7 @@ function generateUUID() {
 
 function getSubTypesJSObj(element) {
     var subTypes = [];
-    if(element == 'select' || element == 'checkbox' || element == 'radio') {
+    if(element == 'select' || element == 'checkboxgroup' || element == 'radio') {
         $('div#sub-type-body div.row').each(function(){
             var order = $(this).children('input[name="order"]').val();
             subTypes.push({
