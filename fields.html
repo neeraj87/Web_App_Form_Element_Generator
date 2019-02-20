@@ -1,129 +1,222 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Web App Form Generator</title>
-        <meta name="description" content="Tool to generate web app elements for Surgeri.">
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/toastr.css">
-        <link rel="stylesheet" href="css/main.css">
 
-        <script src="js/jquery.min.js" type="text/javascript"></script>
-		<script src="js/popper.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/toastr.js" type="text/javascript"></script>
-        <script src="js/clipboard.min.js" type="text/javascript"></script>
-        <script src="js/bootbox.min.js" type="text/javascript"></script>
-        <script src="https://unpkg.com/ionicons@4.2.1/dist/ionicons.js"></script>
-		<script src="js/fieldsPage.js" type="text/javascript"></script>
-    </head>
-    <body>
-        <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">
-                <ion-icon name="beer" size="large"></ion-icon>
-            </a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="fields.html">DSL JSON</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <h2 class="mt-4">DSL JSON Generator</h2>
-		<div class="row">
-			<div class="col-md-6 col-lg-6">
-				<form id="html-gen-form" role="form">
-					<div class="form-group">
-						<label for="main-div-id">Element Label</label>
-						<input type="text" class="form-control" id="element-label" placeholder="Enter label name for the element">
-                    </div>
-                    <div class="form-group">
-						<label for="main-div-id">Element Attribute</label>
-						<input type="text" class="form-control" id="element-attribute">
-					</div>
-					<div class="form-group">
-						<label for="element-type">Element Type</label>
-						<select id="element-type" class="form-control">
-                            <option value="text">Text</option>
-                            <option value="date">Date</option>
-                            <option value="textarea">Textarea</option>
-                            <option value="radio">Radio</option>
-                            <option value="checkbox">Checkbox</option>
-                            <option value="select">Select</option>
-						</select>
-                    </div>
-                    <div id="sub-types" class="card">
-                        <div class="card-header">
-                            Enter Sub types for this element
-                            <button id="add-sub-type" type="button" class="btn btn-primary btn-sm pull-right">Add</button>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Web App Form Generator</title>
+    <meta name="description" content="Tool to generate web app elements for Surgeri.">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/toastr.css">
+    <link rel="stylesheet" href="css/jstree/style.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="js/toastr.js" type="text/javascript"></script>
+    <script src="js/clipboard.min.js" type="text/javascript"></script>
+    <script src="js/bootbox.min.js" type="text/javascript"></script>
+    <script src="js/jstree.min.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/ionicons@4.2.1/dist/ionicons.js"></script>
+    <script src="js/fieldsPage.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <span class="navbar-brand mb-0 h1">DSL JSON Generator
+                <ion-icon name="beer" size="small"></ion-icon>
+            </span>
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="fields.html">DSL JSON</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="row mt-5">
+        <div class="col-md-8 col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <form id="html-gen-form" role="form">
+                        <div class="form-group">
+                            <label for="main-div-id">Element Label</label>
+                            <input type="text" class="form-control" id="element-label" placeholder="Enter label name for the element">
                         </div>
-                        <div id="sub-type-body" class="card-body">
+                        <div class="form-group">
+                            <label for="main-div-id">Element Attribute</label>
+                            <input type="text" class="form-control" id="element-attribute">
+                        </div>
+                        <div class="form-group">
+                            <label for="element-type">Element Type</label>
                             <div class="row">
-                                <input type="text" name="label" class="form-control col-md-4" placeholder="label"/>
-                                <input type="text" name="value" class="form-control col-md-4 ml-2" placeholder="value"/>
-                                <button type="button" class="btn btn-danger btn-sm col-md-2 remove-this-btn ml-2">
-                                    <ion-icon name="close"></ion-icon>
-                                </button>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio1" name="element-type" value="text" checked> Text
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio2" name="element-type" value="textarea"> TextArea
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio6" name="element-type" value="radio"> Radio
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio7" name="element-type" value="checkbox"> Checkbox
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio3" name="element-type" value="date"> Date
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio4" name="element-type" value="time"> Time
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio5" name="element-type" value="datetime"> Date and Time
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio8" name="element-type" value="select"> Dropdown Select
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-					<div class="form-group">
-						<label for="element-placeholder">Element Placeholder</label>
-						<input type="text" class="form-control" id="element-placeholder" placeholder="Placeholder text (only for text, textarea)"/>
-                    </div>
-                    <div class="form-group">
-						<label for="element-error-text">Element Error Text</label>
-						<input type="text" class="form-control" id="element-error-text" placeholder="Error text"/>
-                    </div>
-                    <div class="form-group">
-						<label for="element-required">Is Element Required</label>
-						<input type="checkbox" id="element-required"/>
-                    </div>
-                    <div class="form-group">
-						<label for="element-rendered">Is Element Rendered by Default</label>
-						<input type="checkbox" id="element-rendered" checked/>
-                    </div>
-                    <div class="form-group">
-                        <label for="element-section">Element Section</label>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <select name="section" id="element-section" class="form-control">
-                                    <option value="">None</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <button type="button" id="new-section" class="btn btn-primary">New Section</button>
+                        <div id="element-input-type-div" class="form-group">
+                            <label for="element_input_type">Input Type</label>
+                            <div class="row">
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio9" name="element-input-type" value="string" checked> Text
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio10" name="element-input-type" value="numberDecimal"> Decimal
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio11" name="element-input-type" value="number"> Number
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-					
-					
-					<button id="gen-json-btn" type="button" class="btn btn-success">Generate JSON block</button>
-					<button id="clear-btn" type="button" class="btn btn-danger">Clear</button>
-				</form>
+                        <div id="sub-types" class="card">
+                            <div class="card-header">
+                                Enter Sub types for this element
+                                <button id="add-sub-type" type="button" class="btn btn-primary btn-sm pull-right">Add</button>
+                            </div>
+                            <div id="sub-type-body" class="card-body">
+                                <div class="row">
+                                    <input type="text" name="label" class="form-control col-md-5" placeholder="label" />
+                                    <input type="text" name="value" class="form-control col-md-5" placeholder="value" />
+                                    <input type="number" name="order" class="form-control col-md-1" />
+                                    <button type="button" class="btn btn-danger btn-sm col-md-1 remove-this-btn">
+                                        <ion-icon name="close"></ion-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="element-placeholder">Element Placeholder</label>
+                            <input type="text" class="form-control" id="element-placeholder" placeholder="Placeholder text (only for text, textarea)"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="element-error-text">Element Error Text</label>
+                            <input type="text" class="form-control" id="element-error-text" placeholder="Error text" />
+                        </div>
+                        <div class="form-group">
+                            <label for="element-required">Is Element Required</label>
+                            <input type="checkbox" id="element-required" />
+                        </div>
+                        <div class="form-group">
+                            <label for="element-rendered">Is Element Rendered by Default</label>
+                            <input type="checkbox" id="element-rendered" checked/>
+                        </div>
+                        <div class="form-group">
+                            <label for="element-section">Element Section</label>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <select name="section" id="element-section" class="form-control">
+                                        <option value="">None</option>
+                                    </select>
+                                </div>
+                                <button type="button" id="new-section" class="btn btn-primary col-md-2">Add</button>
+                            </div>
+                        </div>
+
+                        <button id="gen-json-btn" type="button" class="btn btn-success">Generate JSON block</button>
+                        <button id="clear-btn" type="button" class="btn btn-danger">Clear</button>
+                    </form>
+                </div>
             </div>
-            <div class="col-md-6 col-lg-6">
-                <div class="row">
-                    <div class="col-md-10 col-lg-10">
-                        <h3>JSON Output</h3>
-                    </div>
-                    <div class="col-md-2 col-lg-2">
-                        <button id="copy-json" type="button" class="btn btn-link pull-right" data-clipboard-target="#jsonContainer" data-toggle="tooltip" data-placement="top" title="Copy JSON">
-                            <ion-icon name="copy" size="large"></ion-icon>
-                        </button>
+        </div>
+        <div class="col-md-4 col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <button id="copy-json" type="button" class="btn btn-link pull-right" data-clipboard-target="#jsonContainer" data-toggle="tooltip"
+                        data-placement="top" title="Copy JSON">
+                        <ion-icon name="copy" size="large"></ion-icon>
+                    </button>
+                    <div class="row" style="height:800px;overflow-y: scroll;">
+                        <pre id="jsonContainer"></pre>
                     </div>
                 </div>
-                <div class="row" style="height:800px;overflow-y: scroll;">
-                    <pre id="jsonContainer"></pre>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Connect dependant fields</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Parent Field</label>
+                        <select id="field-list" class="form-control">
+                            <option value="">None</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Options</label>
+                        <select id="field-options" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Connected Field</label>
+                        <select id="connected-field" class="form-control">
+                            <option value="">None</option>
+                        </select>
+                    </div>
+                    <button id="connect" type="button" class="btn btn-success">Connect</button>
+                    <button id="fake" type="button" class="btn btn-primary">Test</button>
                 </div>
             </div>
-		</div>
-    </body>
+        </div>
+        <div class="col-md-6 col-lg-6">
+            <div id="jstree_demo_div"></div>
+        </div>
+    </div>
+</body>
+
 </html>
