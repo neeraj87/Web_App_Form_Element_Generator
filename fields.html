@@ -82,10 +82,6 @@
                             <input type="text" class="form-control" id="element-attribute">
                         </div>
                         <div class="form-group">
-                            <label for="main-div-id">Element Bootstrap Style</label>
-                            <input type="text" class="form-control" id="element-style-outer" value="col-12 col-md-6 col-lg-4">
-                        </div>
-                        <div class="form-group">
                             <label for="element-type">Element Type</label>
                             <div class="row">
                                 <div class="form-check col-md-3">
@@ -100,7 +96,7 @@
                                 </div>
                                 <div class="form-check col-md-3">
                                     <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" id="radio6" name="element-type" value="radio"> Radio
+                                        <input type="radio" class="form-check-input" id="radio6" name="element-type" value="radio"> Radio Group
                                     </label>
                                 </div>
                                 <div class="form-check col-md-3">
@@ -140,7 +136,12 @@
                             <div class="row">
                                 <div class="form-check col-md-3">
                                     <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" id="radio9" name="element-input-type" value="string" checked> Text
+                                        <input type="radio" class="form-check-input" id="radio9" name="element-input-type" value="text" checked> Text
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radio1211" name="element-input-type" value="hidden"> Hidden
                                     </label>
                                 </div>
                                 <div class="form-check col-md-3">
@@ -162,9 +163,10 @@
                             </div>
                             <div id="sub-type-body" class="card-body">
                                 <div class="row">
-                                    <input type="text" name="label" class="form-control col-md-5" placeholder="label" />
-                                    <input type="text" name="value" class="form-control col-md-5" placeholder="value" />
+                                    <input type="text" name="label" class="form-control col-md-4" placeholder="label" />
+                                    <input type="text" name="value" class="form-control col-md-4" placeholder="value" />
                                     <input type="number" name="order" class="form-control col-md-1" />
+                                    <input type="radio" name="default" class="form-control col-md-1"/>
                                     <button type="button" class="btn btn-danger btn-sm col-md-1 remove-this-btn">
                                         <ion-icon name="close"></ion-icon>
                                     </button>
@@ -175,7 +177,15 @@
                                 </div> -->
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label for="main-div-id">Element Default Value</label>
+                            <input type="text" class="form-control" id="element-default">
+                            <small>Enter default value for this input/textarea (optional)</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="main-div-id">Element Bootstrap Style</label>
+                            <input type="text" class="form-control" id="element-style-outer" value="col-12 col-md-6 col-lg-4">
+                        </div>
                         <div class="form-group">
                             <label for="element-placeholder">Element Placeholder</label>
                             <input type="text" class="form-control" id="element-placeholder" placeholder="Placeholder text (only for text, textarea)"
