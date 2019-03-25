@@ -57,10 +57,10 @@ $(document).ready(function(){
             parent_id : null,
             field : fieldType,
             inputType : fieldType == 'text' ? $('input[name="element-input-type"]:checked').val() : null,
-            section : {
-                label : $('#element-section').find('option:selected').text(),
-                id : $('#element-section').find('option:selected').val()
-            },
+            // section : {
+            //     label : $('#element-section').find('option:selected').text(),
+            //     id : $('#element-section').find('option:selected').val()
+            // },
             rendered : $('#element-rendered').prop('checked'),
             options : getSubTypesJSObj(fieldType),
             required : $('#element-required').prop('checked'),
@@ -69,7 +69,7 @@ $(document).ready(function(){
             style: $('#element-style-outer').val()
         }
 
-        if(fieldType === 'text' || fieldType === 'textarea') {
+        if(fieldType === 'text' || fieldType === 'textarea' || fieldType === 'hiddentext') {
             fieldJSONObj.value = $('#element-default').val();
         } else if(fieldType === 'checkbox') {
             fieldJSONObj.checked = false;
