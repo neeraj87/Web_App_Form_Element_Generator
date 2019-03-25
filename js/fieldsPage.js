@@ -50,24 +50,32 @@ $(document).ready(function(){
 
         var id = generateUUID();
 
-        jsonVar.push({
+        var fieldJSONObj = {
             id : id,
             label : $('#element-label').val(),
             attribute : attribute,
             parent_id : null,
             field : fieldType,
             inputType : fieldType == 'text' ? $('input[name="element-input-type"]:checked').val() : null,
-            section : {
-                label : $('#element-section').find('option:selected').text(),
-                id : $('#element-section').find('option:selected').val()
-            },
+            // section : {
+            //     label : $('#element-section').find('option:selected').text(),
+            //     id : $('#element-section').find('option:selected').val()
+            // },
             rendered : $('#element-rendered').prop('checked'),
             options : getSubTypesJSObj(fieldType),
             required : $('#element-required').prop('checked'),
             placeholder : $('#element-placeholder').val(),
             error_text : $('#element-error-text').val(),
             style: $('#element-style-outer').val()
-        });
+        }
+
+        if(fieldType === 'text' || fieldType === 'textarea' || fieldType === 'hiddentext') {
+            fieldJSONObj.value = $('#element-default').val();
+        } else if(fieldType === 'checkbox') {
+            fieldJSONObj.checked = false;
+        }
+
+        jsonVar.push(fieldJSONObj);
 
         $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
         toastr["success"]("Field added to JSON", "Success");
@@ -155,9 +163,10 @@ $(document).on('change', 'input[name="element-type"]', function(){
 
 $(document).on('click', '#add-sub-type', function(){
     var myvar = '<div class="row mt-2">'+
-    '<input type="text" name="label" class="form-control col-md-5" placeholder="label"/>'+
-    '<input type="text" name="value" class="form-control col-md-5" placeholder="value"/>'+
+    '<input type="text" name="label" class="form-control col-md-4" placeholder="label"/>'+
+    '<input type="text" name="value" class="form-control col-md-4" placeholder="value"/>'+
     '<input type="number" name="order" class="form-control col-md-1"/>'+
+    '<input type="radio" name="default" class="form-control col-md-1"/>'+
     '<button type="button" class="btn btn-danger btn-sm col-md-1 remove-this-btn"><ion-icon name="close"></ion-icon></button>'+
     '</div>';
 
@@ -256,7 +265,7 @@ function generateUUID() {
 
 function getSubTypesJSObj(element) {
     var subTypes = [];
-    if(element == 'select' || element == 'checkboxgroup' || element == 'radio') {
+    if(element == 'select') {
         $('div#sub-type-body div.row').each(function(){
             var order = $(this).children('input[name="order"]').val();
             subTypes.push({
@@ -264,8 +273,20 @@ function getSubTypesJSObj(element) {
                 label : $(this).children('input[name="label"]').val(),
                 value : $(this).children('input[name="value"]').val(),
                 order : order != undefined ? parseInt(order) : 0,
-                default : false,
-                on_check : null
+                on_check : null,
+                selected: $(this).children('input[name="default"]').prop('checked')
+            });
+        });
+    } else if(element == 'checkboxgroup' || element == 'radio') {
+        $('div#sub-type-body div.row').each(function(){
+            var order = $(this).children('input[name="order"]').val();
+            subTypes.push({
+                id : generateUUID(),
+                label : $(this).children('input[name="label"]').val(),
+                value : $(this).children('input[name="value"]').val(),
+                order : order != undefined ? parseInt(order) : 0,
+                on_check : null,
+                checked: $(this).children('input[name="default"]').prop('checked')
             });
         });
     }
@@ -276,6 +297,7 @@ function clearForm() {
     $('#element-label').val('');
     $('#element-attribute').val('');
     $('#element-placeholder').val('');
+    $('#element-default').val('');
     $('#element-error-text').val('');
     $('#element-required').prop('checked', false);
     $('div#sub-type-body div.row').each(function(){
