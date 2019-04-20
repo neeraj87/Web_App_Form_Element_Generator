@@ -73,13 +73,15 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="main-div-id">Element Label</label>
-                            <input type="text" class="form-control" id="element-label" placeholder="Enter label name for the element">
-                        </div>
-                        <div class="form-group">
-                            <label for="main-div-id">Element Attribute/Name</label>
-                            <input type="text" class="form-control" id="element-attribute">
+                        <div class="row">
+                        	<div class="form-group col-md-6 col-lg-6">
+	                            <label for="main-div-id">Element Label</label>
+	                            <input type="text" class="form-control" id="element-label" placeholder="Enter label name for the element">
+	                        </div>
+	                        <div class="form-group col-md-6 col-lg-6">
+	                            <label for="main-div-id">Element Attribute/Name</label>
+	                            <input type="text" class="form-control" id="element-attribute">
+	                        </div>
                         </div>
                         <div class="form-group">
                             <label for="element-type">Element Type</label>
@@ -176,37 +178,45 @@
                                         <ion-icon name="close"></ion-icon>
                                     </button>
                                 </div>
-                                <!-- <div class="row mt-2">
-                                    <input type="text" class="form-control" id="element-style-inner" value="col-12 col-md-6 col-lg-6">
-                                    <small>Radio/Checkbox Element Style</small>
-                                </div> -->
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="main-div-id">Element Default Value</label>
-                            <input type="text" class="form-control" id="element-default">
-                            <small>Enter default value for this input/textarea (optional)</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="main-div-id">Element Bootstrap Style</label>
+                            <label for="main-div-id">Element Classes</label>
                             <input type="text" class="form-control" id="element-style-outer" value="col-12 col-md-6 col-lg-4">
                         </div>
-                        <div class="form-group">
-                            <label for="element-placeholder">Element Placeholder</label>
-                            <input type="text" class="form-control" id="element-placeholder" placeholder="Placeholder text (only for text, textarea)"
-                            />
+                        <div class="row">
+                        	<div class="form-group col-md-4 col-lg-4">
+	                            <label for="main-div-id">Element Default Value</label>
+	                            <input type="text" class="form-control" id="element-default">
+	                            <small>Enter default value for this input/textarea (optional)</small>
+	                        </div>
+                    		<div class="form-group col-md-4 col-lg-4">
+	                            <label for="element-placeholder">Element Placeholder</label>
+	                            <input type="text" class="form-control" id="element-placeholder" placeholder="Placeholder text (only for text, textarea)"
+	                            />
+	                        </div>
+	                        <div class="form-group col-md-4 col-lg-4">
+	                            <label for="element-error-text">Element Error Text</label>
+	                            <input type="text" class="form-control" id="element-error-text" placeholder="Error text" />
+	                        </div>
                         </div>
-                        <div class="form-group">
-                            <label for="element-error-text">Element Error Text</label>
-                            <input type="text" class="form-control" id="element-error-text" placeholder="Error text" />
-                        </div>
-                        <div class="form-group">
-                            <label for="element-required">Is Element Required</label>
-                            <input type="checkbox" id="element-required" />
-                        </div>
-                        <div class="form-group">
-                            <label for="element-rendered">Is Element Rendered by Default</label>
-                            <input type="checkbox" id="element-rendered" checked/>
+                        <div class="row">
+                        	<div class="form-group col-md-3 col-lg-3">
+	                            <label for="element-required">Is Element Required</label>
+	                            <input type="checkbox" id="element-required" />
+	                        </div>
+	                        <div class="form-group col-md-3 col-lg-3">
+	                            <label for="element-read-only">Is Element Read Only</label>
+	                            <input type="checkbox" id="element-read-only" />
+	                        </div>
+	                        <div class="form-group col-md-3 col-lg-3">
+	                            <label for="element-disabled">Is Element Disabled</label>
+	                            <input type="checkbox" id="element-disabled" />
+	                        </div>
+	                        <div class="form-group col-md-3 col-lg-3">
+	                            <label for="element-rendered">Is Element Rendered</label>
+	                            <input type="checkbox" id="element-rendered" checked/>
+	                        </div>
                         </div>
                         <div class="form-group">
                             <label for="element-section">Element Section</label>
