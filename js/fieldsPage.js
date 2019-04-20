@@ -57,13 +57,11 @@ $(document).ready(function(){
             parent_id : null,
             field : fieldType,
             inputType : fieldType == 'text' ? $('input[name="element-input-type"]:checked').val() : null,
-            // section : {
-            //     label : $('#element-section').find('option:selected').text(),
-            //     id : $('#element-section').find('option:selected').val()
-            // },
             rendered : $('#element-rendered').prop('checked'),
             options : getSubTypesJSObj(fieldType),
             required : $('#element-required').prop('checked'),
+            readonly : $('#element-read-only').prop('checked'),
+            disabled : $('#element-disabled').prop('checked'),
             placeholder : $('#element-placeholder').val(),
             error_text : $('#element-error-text').val(),
             style: $('#element-style-outer').val()
@@ -92,7 +90,8 @@ $(document).ready(function(){
             title: "Create new section",
             inputType: 'text',
             callback: function (result) {
-                if(result == '' || result == 'null') {
+                console.log(result);
+                if(result == '' || result == null) {
                     return;
                 }
                 sectionObjArray.push({
@@ -300,6 +299,8 @@ function clearForm() {
     $('#element-default').val('');
     $('#element-error-text').val('');
     $('#element-required').prop('checked', false);
+    $('#element-read-only').prop('checked', false);
+    $('#element-disabled').prop('checked', false);
     $('div#sub-type-body div.row').each(function(){
         $(this).remove();
     });
