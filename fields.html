@@ -46,6 +46,16 @@
             <div class="card">
                 <div class="card-body">
                     <form id="html-gen-form" role="form">
+                        <div class="row">
+                            <div class="form-group col-md-6 col-lg-6">
+                                <label for="main-div-id">Section Header <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="section-header" placeholder="Enter header for this section">
+                            </div>
+                            <div class="form-group col-md-6 col-lg-6">
+                                <label for="main-div-id">Section Id</label>
+                                <input type="text" class="form-control" id="section-id" placeholder="If no manual ID is entered, one will be auto-generated">
+                            </div>
+                        </div>
                         <h6>Auto Generated Element Attribute format</h6>
                         <div class="row">
                             <div class="form-check col-md-3">
@@ -75,11 +85,11 @@
                         </div>
                         <div class="row">
                         	<div class="form-group col-md-6 col-lg-6">
-	                            <label for="main-div-id">Element Label</label>
+	                            <label for="main-div-id">Element Label <span style="color: red;">*</span></label>
 	                            <input type="text" class="form-control" id="element-label" placeholder="Enter label name for the element">
 	                        </div>
 	                        <div class="form-group col-md-6 col-lg-6">
-	                            <label for="main-div-id">Element Attribute/Name</label>
+	                            <label for="main-div-id">Element Attribute/Name <span style="color: red;">*</span></label>
 	                            <input type="text" class="form-control" id="element-attribute">
 	                        </div>
                         </div>
@@ -170,11 +180,9 @@
                             </div>
                             <div id="sub-type-body" class="card-body">
                                 <div class="row">
-                                    <input type="text" name="label" class="form-control col-md-4" placeholder="label" />
-                                    <input type="text" name="value" class="form-control col-md-4" placeholder="value" />
-                                    <input type="number" name="order" class="form-control col-md-1" />
-                                    <input type="radio" name="default" class="form-control col-md-1"/>
-                                    <button type="button" class="btn btn-danger btn-sm col-md-1 remove-this-btn">
+                                    <input type="text" name="label" class="form-control col-md-5" placeholder="label" />
+                                    <input type="text" name="value" class="form-control col-md-5 ml-2" placeholder="value" />
+                                    <button type="button" class="btn btn-danger btn-sm col-md-1 remove-this-btn ml-2">
                                         <ion-icon name="close"></ion-icon>
                                     </button>
                                 </div>
@@ -218,18 +226,6 @@
 	                            <input type="checkbox" id="element-rendered" checked/>
 	                        </div>
                         </div>
-                        <div class="form-group">
-                            <label for="element-section">Element Section</label>
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <select name="section" id="element-section" class="form-control">
-                                        <option value="">None</option>
-                                    </select>
-                                </div>
-                                <button type="button" id="new-section" class="btn btn-primary col-md-2">Add</button>
-                            </div>
-                        </div>
-
                         <button id="gen-json-btn" type="button" class="btn btn-success">Generate JSON block</button>
                         <button id="clear-btn" type="button" class="btn btn-danger">Clear</button>
                     </form>
@@ -248,38 +244,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row mt-2">
-        <div class="col-md-6 col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Connect dependant fields</h5>
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label>Parent Field</label>
-                        <select id="field-list" class="form-control">
-                            <option value="">None</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Options</label>
-                        <select id="field-options" class="form-control"></select>
-                    </div>
-                    <div class="form-group">
-                        <label>Connected Field</label>
-                        <select id="connected-field" class="form-control">
-                            <option value="">None</option>
-                        </select>
-                    </div>
-                    <button id="connect" type="button" class="btn btn-success">Connect</button>
-                    <button id="fake" type="button" class="btn btn-primary">Test</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-6">
-            <div id="jstree_demo_div"></div>
         </div>
     </div>
 </body>
