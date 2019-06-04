@@ -14,6 +14,7 @@ var textArea =
 
 $(document).ready(function(){
     var jsonVar = [];
+    var sectionObj = {};
     var jsTreeDataArray = [];
     var sectionObjArray = [];
 
@@ -45,6 +46,18 @@ $(document).ready(function(){
             return;
         }
 
+        if($('#section-header').val() === '') {
+            toastr["error"]("Missing Field - Section Header", "Error");
+            return;
+        }
+
+        console.log(sectionObj.section_id);
+        if(sectionObj.section_id == undefined) {
+            sectionObj.section_id = $('#section-id').val() != '' ? $('#section-id').val() : generateUUID();
+        }
+        sectionObj.section_header = $('#section-header').val();
+        sectionObj.section_elements = [];
+
         var fieldType = $('input[name="element-type"]:checked').val();
         var attribute = $('#element-attribute').val();
 
@@ -75,7 +88,10 @@ $(document).ready(function(){
 
         jsonVar.push(fieldJSONObj);
 
-        $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
+        sectionObj.section_elements = jsonVar;
+
+        // $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
+        $('#jsonContainer').text(JSON.stringify(sectionObj, undefined, 2));
         toastr["success"]("Field added to JSON", "Success");
 
         if(fieldType == 'radio' || fieldType == 'checkboxgroup' || fieldType == 'select') {
@@ -83,69 +99,6 @@ $(document).ready(function(){
         }
         $('#connected-field').append($("<option></option>").attr("value",id).text($('#element-label').val()));
         clearForm();
-    });
-
-    $('#new-section').on('click', function(){
-        bootbox.prompt({
-            title: "Create new section",
-            inputType: 'text',
-            callback: function (result) {
-                console.log(result);
-                if(result == '' || result == null) {
-                    return;
-                }
-                sectionObjArray.push({
-                    label : result,
-                    value : generateUUID()
-                });
-
-                $('#element-section').empty();
-                $('#element-section').append($("<option></option>").attr("value", "").text("None"));
-                for(var i = 0; i < sectionObjArray.length; i++) {
-                    $('#element-section').append($("<option></option>").attr("value",sectionObjArray[i].value).text(sectionObjArray[i].label));
-                }
-                toastr["success"]("New Section Created", "Success");
-            }
-        });
-    });
-
-    $('#field-list').on('change', function(){
-        $('#field-options').empty();
-        jsTreeDataArray = [];
-        var parentId = $(this).find('option:selected').val();
-        var fieldObject = jsonVar.find(v => v.id === parentId);
-        var suboptions = fieldObject.options;
-        for(var i = 0; i < suboptions.length; i++) {
-            var optionObj = suboptions[i];
-            $('#field-options').append($("<option></option>").attr("value",optionObj.id).text(optionObj.label));
-        }
-    });
-
-    $('#connect').on('click', function(){
-        var parentId = $('#field-list').find('option:selected').val();
-        var optionId = $('#field-options').find('option:selected').val();
-        var connectedFieldId = $('#connected-field').find('option:selected').val();
-
-        var optionsArrayObj = jsonVar.find(v => v.id === parentId).options;
-        var selectedOptionObj = optionsArrayObj.find(v => v.id === optionId);
-        var connectedFieldObj = jsonVar.find(v => v.id === connectedFieldId);
-
-        console.log('-------- optionsArrayObj: ' + JSON.stringify(optionsArrayObj));
-        console.log('-------- selectedOptionObj: ' + JSON.stringify(selectedOptionObj));
-        console.log('-------- connectedFieldObj: ' + JSON.stringify(connectedFieldObj));
-
-        connectedFieldObj.parent_id = selectedOptionObj.id;
-
-        if(selectedOptionObj.on_check == null) {
-            var onCheckIdArray = [];
-            onCheckIdArray.push(connectedFieldObj.id);
-            selectedOptionObj.on_check = onCheckIdArray;
-        } else {
-            selectedOptionObj.on_check.push(connectedFieldObj.id);
-        }
-
-        $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
-        toastr["success"]("Fields connected", "Success");
     });
 });
 
@@ -162,11 +115,9 @@ $(document).on('change', 'input[name="element-type"]', function(){
 
 $(document).on('click', '#add-sub-type', function(){
     var myvar = '<div class="row mt-2">'+
-    '<input type="text" name="label" class="form-control col-md-4" placeholder="label"/>'+
-    '<input type="text" name="value" class="form-control col-md-4" placeholder="value"/>'+
-    '<input type="number" name="order" class="form-control col-md-1"/>'+
-    '<input type="radio" name="default" class="form-control col-md-1"/>'+
-    '<button type="button" class="btn btn-danger btn-sm col-md-1 remove-this-btn"><ion-icon name="close"></ion-icon></button>'+
+    '<input type="text" name="label" class="form-control col-md-5" placeholder="label"/>'+
+    '<input type="text" name="value" class="form-control col-md-5 ml-2" placeholder="value"/>'+
+    '<button type="button" class="btn btn-danger btn-sm col-md-1 remove-this-btn ml-2"><ion-icon name="close"></ion-icon></button>'+
     '</div>';
 
     $('#sub-type-body').append(myvar);
@@ -193,6 +144,9 @@ $(document).on('change', 'input[type=radio][name="autoGeneratedElementAttributeF
 });
 
 $(document).on('click', '#clear-btn', function(){
+    $('#section-id').val('');
+    $('#section-header').val('');
+    $('#jsonContainer').text('');
     clearForm();
 });
 
@@ -203,6 +157,8 @@ $(document).on('click', '.remove-this-btn', function(){
 $(document).on('blur', '#element-label', function(){
     if($(this).val() != '') {
         var label = $(this).val().replace(/[\. ,:-]+/g, " ");
+
+        $(this).val(toTitleCase(label));
         
         var autoGeneratedElementAttributeFormatValue = $('input[type="radio"][name="autoGeneratedElementAttributeFormat"]:checked').val();
         
@@ -223,33 +179,18 @@ $(document).on('blur', '#element-label', function(){
     }
 });
 
-$(document).on('blur', 'input[name="label"]', function(){
-    if($(this).val() != '') {
-        $(this).siblings('input[name="value"]').val($(this).val().toUpperCase().replace(/[\. ,:-]+/g,"_"));
-    }
+$(document).on('blur', '#section-header', function(){
+    var label = $(this).val().replace(/[\. ,:-]+/g, " ");
+    $(this).val(toTitleCase(label));
 });
 
-$(document).on('click', '#fake', function(){
-    var testJSON = [];
-    for(var i = 0; i < 131; i++) {
-        testJSON.push({
-            id : generateUUID(),
-            label : 'Label - ' + i,
-            attribute : 'LABEL_ATT_' + i,
-            parent_id : null,
-            section : {
-                label : 'None',
-                id : ''
-            },
-            field : 'text',
-            rendered : true,
-            options : [],
-            required : false,
-            placeholder : 'placeholder for Label - ' + i ,
-            error_text : 'Enter this field'
-        });
+$(document).on('blur', 'input[name="label"]', function(){
+    if($(this).val() != '') {
+        var label = $(this).val().replace(/[\. ,:-]+/g, " ");
+        $(this).val(toTitleCase(label));
+
+        $(this).siblings('input[name="value"]').val($(this).val().toUpperCase().replace(/[\. ,:-]+/g,"_"));
     }
-    $('#jsonContainer').text(JSON.stringify(testJSON, undefined, 2));
 });
 
 function generateUUID() {
