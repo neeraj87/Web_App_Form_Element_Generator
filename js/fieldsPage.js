@@ -1,23 +1,10 @@
-
-var text = 
-'<div class="form-group">'+
-'<label for="label_for">label_name</label>'+
-'<input type="text" class="form-control" id="input_id" placeholder="placeholder">'+
-'</div>';
-
-var textArea = 
-'<div class="form-group">'+
-'<label for="label_for">label_name</label>'+
-'<textarea type="text" class="form-control" id="label_for" placeholder="placeholder"s></textarea>'+
-'</div>';
-	
+var jsonVar = [];
+var sectionObj = {};
+var jsTreeDataArray = [];
+var sectionObjArray = [];
+var mysqlScriptString = '';
 
 $(document).ready(function(){
-    var jsonVar = [];
-    var sectionObj = {};
-    var jsTreeDataArray = [];
-    var sectionObjArray = [];
-
     toastr.options = {
         "closeButton": false,
         "debug": false,
@@ -37,69 +24,9 @@ $(document).ready(function(){
     };
 
     new ClipboardJS('#copy-json');
+    new ClipboardJS('#copy-sql');
 
     $('#sub-types').hide();
-
-    $('#gen-json-btn').on('click', function(){
-        if($('#element-label').val() === '' || $('#element-attribute').val() === '') {
-            toastr["error"]("Missing Field", "Error");
-            return;
-        }
-
-        if($('#section-header').val() === '') {
-            toastr["error"]("Missing Field - Section Header", "Error");
-            return;
-        }
-
-        console.log(sectionObj.section_id);
-        if(sectionObj.section_id == undefined) {
-            sectionObj.section_id = $('#section-id').val() != '' ? $('#section-id').val() : generateUUID();
-        }
-        sectionObj.section_header = $('#section-header').val();
-        sectionObj.section_elements = [];
-
-        var fieldType = $('input[name="element-type"]:checked').val();
-        var attribute = $('#element-attribute').val();
-
-        var id = generateUUID();
-
-        var fieldJSONObj = {
-            id : id,
-            label : $('#element-label').val(),
-            attribute : attribute,
-            parent_id : null,
-            field : fieldType,
-            inputType : fieldType == 'text' ? $('input[name="element-input-type"]:checked').val() : null,
-            rendered : $('#element-rendered').prop('checked'),
-            options : getSubTypesJSObj(fieldType),
-            required : $('#element-required').prop('checked'),
-            readonly : $('#element-read-only').prop('checked'),
-            disabled : $('#element-disabled').prop('checked'),
-            placeholder : $('#element-placeholder').val(),
-            error_text : $('#element-error-text').val(),
-            style: $('#element-style-outer').val()
-        }
-
-        if(fieldType === 'text' || fieldType === 'textarea' || fieldType === 'hiddentext') {
-            fieldJSONObj.value = $('#element-default').val();
-        } else if(fieldType === 'checkbox') {
-            fieldJSONObj.checked = false;
-        }
-
-        jsonVar.push(fieldJSONObj);
-
-        sectionObj.section_elements = jsonVar;
-
-        // $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
-        $('#jsonContainer').text(JSON.stringify(sectionObj, undefined, 2));
-        toastr["success"]("Field added to JSON", "Success");
-
-        if(fieldType == 'radio' || fieldType == 'checkboxgroup' || fieldType == 'select') {
-            $('#field-list').append($("<option></option>").attr("value",id).text($('#element-label').val()));
-        }
-        $('#connected-field').append($("<option></option>").attr("value",id).text($('#element-label').val()));
-        clearForm();
-    });
 });
 
 $(document).on('change', 'input[name="element-type"]', function(){
@@ -191,6 +118,152 @@ $(document).on('blur', 'input[name="label"]', function(){
 
         $(this).siblings('input[name="value"]').val($(this).val().toUpperCase().replace(/[\. ,:-]+/g,"_"));
     }
+});
+
+$(document).on('click', '#gen-json-btn', function(){
+    if($('#element-label').val() === '' || $('#element-attribute').val() === '') {
+        toastr["error"]("Missing Field", "Error");
+        return;
+    }
+
+    if($('#section-header').val() === '') {
+        toastr["error"]("Missing Field - Section Header", "Error");
+        return;
+    }
+
+    if(sectionObj.section_id == undefined) {
+        sectionObj.section_id = $('#section-id').val() != '' ? $('#section-id').val() : generateUUID();
+    }
+    sectionObj.section_header = $('#section-header').val();
+    sectionObj.section_elements = [];
+
+    var fieldType = $('input[name="element-type"]:checked').val();
+    var attribute = $('#element-attribute').val();
+
+    var id = generateUUID();
+
+    var fieldJSONObj = {
+        id : id,
+        label : $('#element-label').val(),
+        attribute : attribute,
+        parent_id : null,
+        field : fieldType,
+        inputType : fieldType == 'text' ? $('input[name="element-input-type"]:checked').val() : null,
+        rendered : $('#element-rendered').prop('checked'),
+        options : getSubTypesJSObj(fieldType),
+        required : $('#element-required').prop('checked'),
+        readonly : $('#element-read-only').prop('checked'),
+        disabled : $('#element-disabled').prop('checked'),
+        placeholder : $('#element-placeholder').val(),
+        error_text : $('#element-error-text').val(),
+        style: $('#element-style-outer').val()
+    }
+
+    if(fieldType === 'text' || fieldType === 'textarea' || fieldType === 'hiddentext') {
+        fieldJSONObj.value = $('#element-default').val();
+    } else if(fieldType === 'checkbox') {
+        fieldJSONObj.checked = false;
+    }
+
+    jsonVar.push(fieldJSONObj);
+
+    sectionObj.section_elements = jsonVar;
+
+    // $('#jsonContainer').text(JSON.stringify(jsonVar, undefined, 2));
+    $('#jsonContainer').text(JSON.stringify(sectionObj, undefined, 2));
+    toastr["success"]("Field added to JSON", "Success");
+
+    if(fieldType == 'radio' || fieldType == 'checkboxgroup' || fieldType == 'select') {
+        $('#field-list').append($("<option></option>").attr("value",id).text($('#element-label').val()));
+    }
+    $('#connected-field').append($("<option></option>").attr("value",id).text($('#element-label').val()));
+    clearForm();
+
+    // add the attribute to the mysql generator
+    $('#field').append($("<option></option>").attr("value",attribute).text(attribute));
+});
+
+// SQL generation js
+$(document).on('change', '#type', function() {
+    var typeValue = $(this).val();
+    var fieldLength = '';
+
+    if(typeValue === 'VARCHAR') {
+        fieldLength = '255';
+    } else if(typeValue === 'TEXT') {
+        fieldLength = '';
+    } else if(typeValue === 'INT') {
+        fieldLength = '10';
+    } else if(typeValue === 'TINYINT') {
+        fieldLength = '1';
+        $('#allownull').attr('checked', false);
+        $('#default').val('0');
+    } else if(typeValue === 'DECIMAL') {
+        fieldLength = '10,2';
+    } else if(typeValue === 'DATE') {
+        fieldLength = '';
+        $('#allownull').attr('checked', true);
+        $('#default').val('NULL');
+    } else if(typeValue === 'DATETIME') {
+        fieldLength = '';
+        $('#allownull').attr('checked', true);
+        $('#default').val('NULL');
+    }
+    $('#length').val(fieldLength);
+});
+
+$(document).on('change', '#allownull', function(){
+    if($(this).prop('checked')) {
+        $('#default').val('NULL');
+    } else {
+        // set default value based on the type of the field
+        var typeValue = $('#type').val();
+        if(typeValue === 'VARCHAR') {
+            $('#default').val('');
+        } else if(typeValue === 'TEXT') {
+            $('#default').val('');
+        } else if(typeValue === 'INT') {
+            $('#default').val('0');
+        } else if(typeValue === 'TINYINT') {
+            $('#default').val('0');
+        } else if(typeValue === 'DECIMAL') {
+            $('#default').val('0.00');
+        } else if(typeValue === 'DATE') {
+            $('#default').val('NULL');
+        } else if(typeValue === 'DATETIME') {
+            $('#default').val('NULL');
+        }
+    }
+});
+
+$(document).on('click', '#gen-sql-btn', function(){
+    var addColumnString = 'ADD COLUMN ';
+
+    var fieldLength = $('#length').val();
+
+    addColumnString += $('#field').val() + ' ';
+    addColumnString += $('#type').val();
+    addColumnString += fieldLength === '' ? fieldLength : '(' + fieldLength + ')';
+
+    if($('#allownull').prop('checked')){
+        addColumnString += ' DEFAULT NULL';
+    } else {
+        addColumnString += ' NOT NULL DEFAULT ' + $('#default').val();
+    }
+
+    addColumnString += ', \n';
+
+    console.log(`${addColumnString}`);
+
+    if(mysqlScriptString === '') {
+        mysqlScriptString = $('#table').val() + ' \n';
+    }
+
+    mysqlScriptString += addColumnString;
+
+    console.log(`${mysqlScriptString}`);
+
+    $('#sqlContainer').val(mysqlScriptString);
 });
 
 function generateUUID() {
