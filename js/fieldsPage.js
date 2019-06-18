@@ -146,6 +146,7 @@ $(document).on('click', '#gen-json-btn', function(){
         id : id,
         label : $('#element-label').val(),
         attribute : attribute,
+        classes: $('#element-classes').val(),
         parent_id : null,
         field : fieldType,
         inputType : fieldType == 'text' ? $('input[name="element-input-type"]:checked').val() : null,
@@ -312,6 +313,7 @@ function clearForm() {
     $('#element-placeholder').val('');
     $('#element-default').val('');
     $('#element-error-text').val('');
+    $('#element-classes').val('');
     $('#element-required').prop('checked', false);
     $('#element-read-only').prop('checked', false);
     $('#element-disabled').prop('checked', false);
