@@ -258,7 +258,7 @@
         </div>
     </div>
     <div class="row mt-2">
-        <div class="col-md-8 col-lg-8">
+        <div class="col-md-6 col-lg-6">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Generate MySQL Alter Table Script</h5>
@@ -308,16 +308,26 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-lg-4">
+        <div class="col-md-6 col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <button id="copy-sql" type="button" class="btn btn-link pull-right" data-clipboard-target="#sqlContainer" data-toggle="tooltip"
-                        data-placement="top" title="Copy SQL">
-                        <ion-icon name="copy" size="large"></ion-icon>
-                    </button>
-                    <div class="row" style="height:500px;overflow-y: scroll;">
-                        <!-- <pre id="sqlContainer"></pre> -->
-                        <textarea id="sqlContainer" class="form-control"></textarea>
+                    <div class="row">
+                        <div class="col-12">
+                            <button id="copy-sql" type="button" class="btn btn-link pull-right" data-clipboard-target="#sqlContainer" data-toggle="tooltip" data-placement="top" title="Copy SQL">
+                                <ion-icon name="copy" size="large"></ion-icon>
+                            </button>
+                            <div class="row" style="height:500px;overflow-y: scroll;">
+                                <textarea id="sqlContainer" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button id="copy-model" type="button" class="btn btn-link pull-right" data-clipboard-target="#modelContainer" data-toggle="tooltip" data-placement="top" title="Copy Model">
+                                <ion-icon name="copy" size="large"></ion-icon>
+                            </button>
+                            <div class="row" style="height:500px;overflow-y: scroll;">
+                                <textarea id="modelContainer" class="form-control"></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

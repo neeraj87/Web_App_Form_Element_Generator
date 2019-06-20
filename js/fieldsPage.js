@@ -3,6 +3,7 @@ var sectionObj = {};
 var jsTreeDataArray = [];
 var sectionObjArray = [];
 var mysqlScriptString = '';
+var dbModelString = '';
 
 $(document).ready(function(){
     toastr.options = {
@@ -240,31 +241,32 @@ $(document).on('change', '#allownull', function(){
 $(document).on('click', '#gen-sql-btn', function(){
     var addColumnString = 'ADD COLUMN ';
 
+    var fieldName = $('#field').val();
+    var fieldType = $('#type').val();
     var fieldLength = $('#length').val();
+    var fieldDefault = $('#default').val();
 
-    addColumnString += $('#field').val() + ' ';
-    addColumnString += $('#type').val();
+    addColumnString += fieldName + ' ';
+    addColumnString += fieldType;
     addColumnString += fieldLength === '' ? fieldLength : '(' + fieldLength + ')';
 
     if($('#allownull').prop('checked')){
         addColumnString += ' DEFAULT NULL';
     } else {
-        addColumnString += ' NOT NULL DEFAULT ' + $('#default').val();
+        addColumnString += ' NOT NULL DEFAULT ' + fieldDefault;
     }
 
     addColumnString += ', \n';
-
-    console.log(`${addColumnString}`);
 
     if(mysqlScriptString === '') {
         mysqlScriptString = $('#table').val() + ' \n';
     }
 
     mysqlScriptString += addColumnString;
-
-    console.log(`${mysqlScriptString}`);
+    dbModelString += getDbModelValue(fieldName, fieldType) + '\n';
 
     $('#sqlContainer').val(mysqlScriptString);
+    $('#modelContainer').val(dbModelString);
 });
 
 function generateUUID() {
@@ -330,4 +332,24 @@ function toTitleCase(str) {
     return str.replace(/(?:^|\s)\w/g, function(match) {
         return match.toUpperCase();
     });
+}
+
+function getDbModelValue(field, type) {
+    var modelType;
+    if(type === 'VARCHAR') {
+        modelType = 'type.STRING,';
+    } else if(type === 'TEXT') {
+        modelType = 'type.TEXT,';
+    } else if(type === 'INT') {
+        modelType = 'type.INTEGER,';
+    } else if(type === 'TINYINT') {
+        modelType = 'type.BOOLEAN,';
+    } else if(type === 'DECIMAL') {
+        modelType = 'type.DECIMAL(10,2),';
+    } else if(type === 'DATE') {
+        modelType = 'type.DATEONLY,';
+    } else if(type === 'DATETIME') {
+        modelType = 'type.DATE,';
+    }
+    return field + ': ' + modelType;
 }
