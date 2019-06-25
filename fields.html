@@ -103,11 +103,6 @@
                                 </div>
                                 <div class="form-check col-md-3">
                                     <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" id="radio77" name="element-type" value="hiddentext"> Hidden Text
-                                    </label>
-                                </div>
-                                <div class="form-check col-md-3">
-                                    <label class="form-check-label">
                                         <input type="radio" class="form-check-input" id="radio2" name="element-type" value="textarea"> TextArea
                                     </label>
                                 </div>
@@ -158,6 +153,16 @@
                                 </div>
                                 <div class="form-check col-md-3">
                                     <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="email-radio" name="element-input-type" value="email"> Email
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="password-radio" name="element-input-type" value="password"> Password
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-3">
+                                    <label class="form-check-label">
                                         <input type="radio" class="form-check-input" id="radio1211" name="element-input-type" value="hidden"> Hidden
                                     </label>
                                 </div>
@@ -188,9 +193,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="main-div-id">Element Classes</label>
-                            <input type="text" class="form-control" id="element-style-outer" value="col-12 col-md-6 col-lg-4">
+                        <div class="row">
+                            <div class="form-group col-md-6 col-lg-6">
+                                <label for="element-style-outer">Element Outer Div Classes</label>
+                                <input type="text" class="form-control" id="element-style-outer" value="col-12 col-md-6 col-lg-4">
+                            </div>
+                            <div class="form-group col-md-6 col-lg-6">
+                                <label for="element-classes">Element Classes</label>
+                                <input type="text" class="form-control" id="element-classes" placeholder="Comma separated class names for this html input element">
+                            </div>
                         </div>
                         <div class="row">
                         	<div class="form-group col-md-4 col-lg-4">
@@ -241,6 +252,82 @@
                     </button>
                     <div class="row" style="height:800px;overflow-y: scroll;">
                         <pre id="jsonContainer"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Generate MySQL Alter Table Script</h5>
+                    <form role="form">
+                        <div class="row">
+                            <div class="form-group col-md-12 col-lg-12">
+                                <label for="table">Table</label>
+                                <input type="text" id="table" name="table" class="form-control" value="ALTER TABLE `table_name`">
+                            </div>
+                            <div class="form-group col-md-3 col-lg-3">
+                                <label for="field">Field</label>
+                                <select id="field" class="form-control">
+                                    <option value="">-</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 col-lg-3">
+                                <label for="type">Type</label>
+                                <select id="type" class="form-control">
+                                    <option value="VARCHAR">VARCHAR</option>
+                                    <option value="TEXT">TEXT</option>
+                                    <option value="INT">INT</option>
+                                    <option value="TINYINT">TINYINT</option>
+                                    <option value="DECIMAL">DECIMAL</option>
+                                    <option value="DATE">DATE</option>
+                                    <option value="DATETIME">DATETIME</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 col-lg-3">
+                                <label for="length">Length</label>
+                                <input type="text" id="length" class="form-control" name="length" value="255">
+                            </div>
+                            <div class="form-group col-md-3 col-lg-3">
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="allownull">Allow Null</label>
+                                        <input type="checkbox" id="allownull" class="form-control" checked="true"/>
+                                    </div>
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="default">Default</label>
+                                        <input type="text" id="default" class="form-control" value="NULL"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" id="gen-sql-btn" class="btn btn-success">Generate Script</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <button id="copy-sql" type="button" class="btn btn-link pull-right" data-clipboard-target="#sqlContainer" data-toggle="tooltip" data-placement="top" title="Copy SQL">
+                                <ion-icon name="copy" size="large"></ion-icon>
+                            </button>
+                            <div class="row" style="height:500px;overflow-y: scroll;">
+                                <textarea id="sqlContainer" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button id="copy-model" type="button" class="btn btn-link pull-right" data-clipboard-target="#modelContainer" data-toggle="tooltip" data-placement="top" title="Copy Model">
+                                <ion-icon name="copy" size="large"></ion-icon>
+                            </button>
+                            <div class="row" style="height:500px;overflow-y: scroll;">
+                                <textarea id="modelContainer" class="form-control"></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
