@@ -158,6 +158,7 @@ $(document).on('click', '#gen-json-btn', function(){
         disabled : $('#element-disabled').prop('checked'),
         placeholder : $('#element-placeholder').val(),
         error_text : $('#element-error-text').val(),
+        help_text: $('#element-help-text').val(),
         style: $('#element-style-outer').val()
     }
 
